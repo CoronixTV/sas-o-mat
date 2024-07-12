@@ -83,7 +83,7 @@
           }
         }}>Stimme zu</Button
       >
-      {#if Questions[currentQuestion].answer !== AnswerType.Unanswerd}
+      {#if Questions[currentQuestion].answer !== AnswerType.Unanswerd && currentQuestion !== Questions.length - 1}
         <Button
           pill={true}
           outline={true}
