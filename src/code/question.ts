@@ -58,7 +58,8 @@ function getAgreePercentage(party: Party, questions: Question[]) {
     if (party.Agrees.length === 0) {
         return 0
     }
-    let result: number = (agreeCount / party.Agrees.length) * 100
+    let questions_without_neutral = questions.filter(question => question.answer !== AnswerType.Neutral)
+    let result: number = (agreeCount / questions_without_neutral.length) * 100
     return Number(result.toFixed(1))
 }
 
