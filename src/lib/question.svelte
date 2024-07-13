@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Card, Button, GradientButton, Progressbar } from "flowbite-svelte";
-  import { Questions, AnswerType, getResults } from "../code/question";
+  import { Questions, AnswerType, getResults, mobile } from "../code/question";
   import {
     ThumbsUpSolid,
     ArrowRightOutline,
@@ -20,84 +20,167 @@
 
     console.log(Questions[Questions.length - 1].answer == AnswerType.Unanswerd);
   }
-
+  let isMobile = mobile();
   let isInConclusion = false;
 </script>
 
-{#if !isInConclusion}
-  <Card class="text-center" size="lg" padding="xl">
-    <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
-      {Questions[currentQuestion].heading}
-    </h5>
-    <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
-      {Questions[currentQuestion].content}
-    </p>
-    <div
-      class="justify-center items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse"
-    >
-      <Button
-        pill={true}
-        outline={true}
-        on:click={() => {
-          if (currentQuestion > 0) {
-            currentQuestion--;
-          }
-        }}
-        class="!p-2"
-        size="xl"
+{#if !isMobile}
+  {#if !isInConclusion}
+    <Card class="text-center" size="lg" padding="xl">
+      <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+        {Questions[currentQuestion].heading}
+      </h5>
+      <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
+        {Questions[currentQuestion].content}
+      </p>
+      <div
+        class="justify-center items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse"
       >
-        <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
-      </Button>
-      <Button
-        outline={Questions[currentQuestion].answer == AnswerType.Agree ||
-          Questions[currentQuestion].answer == AnswerType.Neutral}
-        color="red"
-        on:click={() => {
-          if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
-            submitQuestion(AnswerType.Disagree);
-          } else {
-            submitQuestionWithoutContinue(AnswerType.Disagree);
-          }
-        }}>Stimme nicht zu</Button
-      >
-      <Button
-        outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
-          Questions[currentQuestion].answer == AnswerType.Agree}
-        on:click={() => {
-          if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
-            submitQuestion(AnswerType.Neutral);
-          } else {
-            submitQuestionWithoutContinue(AnswerType.Neutral);
-          }
-        }}>Mir egal</Button
-      >
-      <Button
-        color="green"
-        outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
-          Questions[currentQuestion].answer == AnswerType.Neutral}
-        on:click={() => {
-          if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
-            submitQuestion(AnswerType.Agree);
-          } else {
-            submitQuestionWithoutContinue(AnswerType.Agree);
-          }
-        }}>Stimme zu</Button
-      >
-      {#if Questions[currentQuestion].answer !== AnswerType.Unanswerd && currentQuestion !== Questions.length - 1}
         <Button
           pill={true}
           outline={true}
           on:click={() => {
-            currentQuestion++;
+            if (currentQuestion > 0) {
+              currentQuestion--;
+            }
           }}
           class="!p-2"
           size="xl"
         >
-          <ArrowRightOutline class="w-6 h-6 text-primary-700" />
+          <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
         </Button>
-      {/if}
-    </div>
-  </Card>
+        <Button
+          outline={Questions[currentQuestion].answer == AnswerType.Agree ||
+            Questions[currentQuestion].answer == AnswerType.Neutral}
+          color="red"
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Disagree);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Disagree);
+            }
+          }}>Stimme nicht zu</Button
+        >
+        <Button
+          outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
+            Questions[currentQuestion].answer == AnswerType.Agree}
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Neutral);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Neutral);
+            }
+          }}>Mir egal</Button
+        >
+        <Button
+          color="green"
+          outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
+            Questions[currentQuestion].answer == AnswerType.Neutral}
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Agree);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Agree);
+            }
+          }}>Stimme zu</Button
+        >
+        {#if Questions[currentQuestion].answer !== AnswerType.Unanswerd && currentQuestion !== Questions.length - 1}
+          <Button
+            pill={true}
+            outline={true}
+            on:click={() => {
+              currentQuestion++;
+            }}
+            class="!p-2"
+            size="xl"
+          >
+            <ArrowRightOutline class="w-6 h-6 text-primary-700" />
+          </Button>
+        {/if}
+      </div>
+    </Card>
+  {/if}
+{/if}
+
+{#if isMobile}
+  {#if !isInConclusion}
+    <Card class="text-center" size="lg" padding="xl">
+      <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+        {Questions[currentQuestion].heading}
+      </h5>
+      <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
+        {Questions[currentQuestion].content}
+      </p>
+      <div class="flex flex-col justify-center items-center space-y-4">
+        <Button
+          pill={true}
+          outline={true}
+          on:click={() => {
+            if (currentQuestion > 0) {
+              currentQuestion--;
+            }
+          }}
+          class="!p-2"
+          size="xl"
+        >
+          <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
+        </Button>
+        <Button
+          class="!px-8 !py-2 w-70"
+          outline={Questions[currentQuestion].answer == AnswerType.Agree ||
+            Questions[currentQuestion].answer == AnswerType.Neutral}
+          color="red"
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Disagree);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Disagree);
+            }
+          }}>Stimme nicht zu</Button
+        >
+        <Button
+          class="!px-8 !py-2 w-70"
+          outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
+            Questions[currentQuestion].answer == AnswerType.Agree}
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Neutral);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Neutral);
+            }
+          }}
+        >
+          Mir egal</Button
+        >
+        <Button
+          class="!px-8 !py-2 w-70"
+          color="green"
+          outline={Questions[currentQuestion].answer == AnswerType.Disagree ||
+            Questions[currentQuestion].answer == AnswerType.Neutral}
+          on:click={() => {
+            if (Questions[currentQuestion].answer == AnswerType.Unanswerd) {
+              submitQuestion(AnswerType.Agree);
+            } else {
+              submitQuestionWithoutContinue(AnswerType.Agree);
+            }
+          }}>Stimme zu</Button
+        >
+        {#if Questions[currentQuestion].answer !== AnswerType.Unanswerd && currentQuestion !== Questions.length - 1}
+          <Button
+            pill={true}
+            outline={true}
+            on:click={() => {
+              currentQuestion++;
+            }}
+            class="!p-2"
+            size="xl"
+          >
+            <ArrowRightOutline class="w-6 h-6 text-primary-700" />
+          </Button>
+        {/if}
+      </div>
+    </Card>
+  {/if}
 {/if}
 
 {#if !isInConclusion}
