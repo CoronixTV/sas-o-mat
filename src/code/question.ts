@@ -9,26 +9,26 @@ export enum AnswerType {
 
 export type Question = { heading: string, content: string, answer: AnswerType }
 
-export let questionIceCream: Question = { heading: "Eiscreme", content: "Mögen Sie Eiscreme?", answer: AnswerType.Unanswerd }
-export let questionPizza: Question = { heading: "Pizza", content: "Mögen Sie Pizza?", answer: AnswerType.Unanswerd }
-export let questionBurger: Question = { heading: "Burger", content: "Mögen Sie Burger?", answer: AnswerType.Unanswerd }
-export let questionPasta: Question = { heading: "Pasta", content: "Mögen Sie Pasta?", answer: AnswerType.Unanswerd }
-export let questionSushi: Question = { heading: "Sushi", content: "Mögen Sie Sushi?", answer: AnswerType.Unanswerd }
-export let questionTaco: Question = { heading: "Taco", content: "Mögen Sie Tacos?", answer: AnswerType.Unanswerd }
-export let questionSteak: Question = { heading: "Steak", content: "Mögen Sie Steak?", answer: AnswerType.Unanswerd }
-export let questionSalad: Question = { heading: "Salat", content: "Mögen Sie Salat?", answer: AnswerType.Unanswerd }
-export let questionSandwich: Question = { heading: "Sandwich", content: "Mögen Sie Sandwiches?", answer: AnswerType.Unanswerd }
-export let questionSoup: Question = { heading: "Suppe", content: "Mögen Sie Suppe?", answer: AnswerType.Unanswerd }
-export let Questions = [questionBurger, questionPizza, questionIceCream, questionPasta, questionSalad, questionSandwich, questionSoup, questionSteak, questionSushi, questionTaco]
+export let questionSubventionen: Question = { heading: "Subventionen", content: "Firmen, die in finanzielle Not geraten, sollen durch Leistungen des Staates (Subventionen) unterstützt werden.", answer: AnswerType.Unanswerd }
+export let questionSteuern: Question = { heading: "Steuern", content: "Firmen, die sehr hohe Gewinne erzielen, sollen zum Gemeinwohl beitragen und höhere Steuersätze zahlen.", answer: AnswerType.Unanswerd }
+export let questionGrundeinkommen: Question = { heading: "Grundeinkommen", content: "Es sollte ein bedingungsloses Grundeinkommen geben.", answer: AnswerType.Unanswerd }
+export let questionBesuchertag: Question = { heading: "Besuchertag", content: "Es sollte einen zusätzlichen Besuchertag geben, um mehr Geld in den Wirtschaftskreislauf zu bringen.", answer: AnswerType.Unanswerd }
+export let questionVegTag: Question = { heading: "Vegetarischer Tag", content: "Maßnahmen gegen den Klimawandel sollten Priorität haben. Daher sind wir für die Einführung eines vegetarischen Tages.", answer: AnswerType.Unanswerd }
+export let questionMüllvermeidung: Question = { heading: "Müllvermeidung", content: "Umweltschutz ist ein wichtiges Ziel unserer Regierung. Gesetze zur Müllvermeidung sollten erlassen und streng kontrolliert werden.", answer: AnswerType.Unanswerd }
+export let questionStandards: Question = { heading: "Ökologische Standards", content: "Waren, welche in Dörmany eingeführt werden, sollten gewisse ökologische Standards erfüllen müssen.", answer: AnswerType.Unanswerd }
+export let questionVeranstaltungen: Question = { heading: "Veranstaltungen", content: "Kulturelle Veranstaltungen sind Privatsache, daher ist es nicht die Aufgabe des Staates die Kultur zu finanzieren.", answer: AnswerType.Unanswerd }
+export let questionBeleidigung: Question = { heading: "Beleidigung", content: "Beleidigende Inhalte bei kulturellen Aufführungen und in Pressemitteilungen müssen verfolgt und hart bestraft werden.", answer: AnswerType.Unanswerd }
+export let questionGesetze: Question = { heading: "Gesetze", content: "Das Parlament sollte so wenig Gesetze wie möglich erlassen.", answer: AnswerType.Unanswerd }
+export let questionWirtschaftParlament = { heading: "Wirtschaft und Parlament", content: "Die Hauptaufgabe des Parlamentes ist es, die Wirtschaft zu stärken. Alle anderen Anliegen werden diesem Ziel untergeordnet.", answer: AnswerType.Unanswerd }
+export let questionParlamentBefugnisse = { heading: "Befugnisse des Parlamentes", content: "Das Parlament darf alles beschließen.", answer: AnswerType.Unanswerd }
+export let Questions = [questionSubventionen, questionSteuern, questionGrundeinkommen, questionBesuchertag, questionVegTag, questionMüllvermeidung, questionStandards, questionVeranstaltungen, questionBeleidigung, questionGesetze, questionWirtschaftParlament, questionParlamentBefugnisse]
+
+type Party = { name: string, displayName: string, Agrees: Question[], color?: string }
 
 
-type Party = { name: string, Agrees: Question[] }
-
-
-let MeatParty: Party = { name: "Fleischpartei", Agrees: [questionBurger, questionSteak, questionSushi] }
-let VegParty: Party = { name: "Veggi-Partei", Agrees: [questionPasta, questionIceCream, questionSalad] }
-let SweetParty: Party = { name: "Süßes-Partei", Agrees: [questionIceCream, questionSandwich] }
-
+let Monetarier: Party = { name: "DMO", displayName: "Die Monetarier",  Agrees: [questionSubventionen, questionBesuchertag, questionMüllvermeidung, questionVeranstaltungen, questionBeleidigung, questionWirtschaftParlament], color: "bg-yellow-500 dark:bg-yellow-500" }
+let CBP: Party = { name: "CBP", displayName: "Clevere Bürger Partei", Agrees: [questionSteuern, questionGrundeinkommen, questionBesuchertag, questionVeranstaltungen, questionBeleidigung, questionGesetze], color: "bg-teal-500 dark:bg-teal-500" }
+let DP: Party = { name: "DP", displayName: "die protagonisten.", Agrees: [questionSubventionen, questionSteuern,questionBesuchertag, questionMüllvermeidung, questionStandards, questionBeleidigung], color: "bg-blue-500 dark:bg-blue-500" }
 function getAgreePercentage(party: Party, questions: Question[]) {
     //remove the questions that the user answered with neutral from both the party and the user
     let userQuestions = questions.filter(q => q.answer !== AnswerType.Neutral)
@@ -63,13 +63,12 @@ export type Result = { party: Party, percentage: number }
 
 export function getResults(questions: Question[]): Result[] {
     let results: Result[] = []
-    results.push({ party: MeatParty, percentage: getAgreePercentage(MeatParty, questions) })
-    console.log(getAgreePercentage(MeatParty, questions))
-    results.push({ party: VegParty, percentage: getAgreePercentage(VegParty, questions) })
-    console.log(getAgreePercentage(VegParty, questions))
-
-    results.push({ party: SweetParty, percentage: getAgreePercentage(SweetParty, questions) })
-    console.log(getAgreePercentage(SweetParty, questions))
+    const parties = [CBP, Monetarier, DP];
+    parties.forEach(party => {
+        const percentage = Number(getAgreePercentage(party, questions));
+        results.push({ party, percentage });
+    });
+     
     results.sort((a, b) => b.percentage - a.percentage);
     return results
 }

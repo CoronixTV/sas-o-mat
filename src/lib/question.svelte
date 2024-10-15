@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, Button, GradientButton, Progressbar } from "flowbite-svelte";
+  import { Card, Button, GradientButton, Progressbar, Tooltip } from "flowbite-svelte";
   import { Questions, AnswerType, getResults, mobile } from "../code/question";
   import {
     ThumbsUpSolid,
@@ -36,19 +36,22 @@
       <div
         class="justify-center items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse"
       >
+        {#if !(currentQuestion == 0)}
         <Button
-          pill={true}
-          outline={true}
-          on:click={() => {
-            if (currentQuestion > 0) {
-              currentQuestion--;
-            }
-          }}
-          class="!p-2"
-          size="xl"
-        >
-          <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
-        </Button>
+        pill={true}
+        outline={true}
+        on:click={() => {
+          if (currentQuestion > 0) {
+            currentQuestion--;
+          }
+        }}
+        class="!p-2 group"
+        size="xl"
+      >
+        <ArrowLeftOutline class="w-6 h-6 text-primary-700 group-hover:text-primary-50" />
+      </Button>
+        {/if}
+
         <Button
           outline={Questions[currentQuestion].answer == AnswerType.Agree ||
             Questions[currentQuestion].answer == AnswerType.Neutral}
@@ -91,10 +94,10 @@
             on:click={() => {
               currentQuestion++;
             }}
-            class="!p-2"
+            class="!p-2 group"
             size="xl"
           >
-            <ArrowRightOutline class="w-6 h-6 text-primary-700" />
+            <ArrowRightOutline class="w-6 h-6 text-primary-700 group-hover:text-primary-50" />
           </Button>
         {/if}
       </div>
@@ -112,19 +115,21 @@
         {Questions[currentQuestion].content}
       </p>
       <div class="flex flex-col justify-center items-center space-y-4">
-        <Button
-          pill={true}
-          outline={true}
-          on:click={() => {
-            if (currentQuestion > 0) {
-              currentQuestion--;
-            }
-          }}
-          class="!p-2"
-          size="xl"
-        >
-          <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
-        </Button>
+        {#if !(currentQuestion == 0)}
+          <Button
+            pill={true}
+            outline={true}
+            on:click={() => {
+              if (currentQuestion > 0) {
+                currentQuestion--;
+              }
+            }}
+            class="!p-2 group"
+            size="xl"
+          >
+            <ArrowLeftOutline class="w-6 h-6 text-primary-700 group-hover:text-primary-50" />
+          </Button>
+        {/if}
         <Button
           class="!px-8 !py-2 w-70"
           outline={Questions[currentQuestion].answer == AnswerType.Agree ||
@@ -172,10 +177,10 @@
             on:click={() => {
               currentQuestion++;
             }}
-            class="!p-2"
+            class="!p-2 group"
             size="xl"
           >
-            <ArrowRightOutline class="w-6 h-6 text-primary-700" />
+            <ArrowRightOutline class="w-6 h-6 text-primary-700 group-hover:text-primary-50" />
           </Button>
         {/if}
       </div>
@@ -211,12 +216,17 @@
       Antworten werden nicht berücksichtigt.
     </p>
     {#each getResults(Questions) as result}
-      <div style="display: flex; align-items: center; margin-bottom: 20px;">
-        <h2 style="margin-right: 20px; flex-shrink: 0;">{result.party.name}</h2>
-        <Progressbar progress={result.percentage} />
-        <h2 style="margin-left: 10px; flex-shrink: 0;">{result.percentage}%</h2>
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; width: 100%;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+        <h2 style="margin-right: 15px; flex-shrink: 0; width: 60px; text-align: right; font-weight: bold;">{result.party.name}</h2>
+        <div style="flex-grow: 1; max-width: 400px; margin-left: 0px;">
+          <Progressbar progress={result.percentage} style="width: 100%;" progressClass={result.party.color} size="h-3"/>
+          <Tooltip>{result.party.displayName}</Tooltip>
+        </div>
+        <h2 style="margin-left: 10px; flex-shrink: 0; width: 60px; text-align: left;">{result.percentage}%</h2>
       </div>
-    {/each}
+    </div>
+  {/each}
     <div>
       <Button
         pill={true}
@@ -224,10 +234,10 @@
         on:click={() => {
           isInConclusion = false;
         }}
-        class="!p-2"
+        class="!p-2 group"
         size="xl"
       >
-        <ArrowLeftOutline class="w-6 h-6 text-primary-700" />
+        <ArrowLeftOutline class="w-6 h-6 text-primary-700 group-hover:text-primary-50" />
       </Button>
     </div>
   </Card>
