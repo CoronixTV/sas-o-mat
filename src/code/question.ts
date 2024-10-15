@@ -29,6 +29,7 @@ type Party = { name: string, displayName: string, Agrees: Question[], color?: st
 let Monetarier: Party = { name: "DMO", displayName: "Die Monetarier",  Agrees: [questionSubventionen, questionBesuchertag, questionMüllvermeidung, questionVeranstaltungen, questionBeleidigung, questionWirtschaftParlament], color: "bg-yellow-500 dark:bg-yellow-500" }
 let CBP: Party = { name: "CBP", displayName: "Clevere Bürger Partei", Agrees: [questionSteuern, questionGrundeinkommen, questionBesuchertag, questionVeranstaltungen, questionBeleidigung, questionGesetze], color: "bg-teal-500 dark:bg-teal-500" }
 let DP: Party = { name: "DP", displayName: "die protagonisten.", Agrees: [questionSubventionen, questionSteuern,questionBesuchertag, questionMüllvermeidung, questionStandards, questionBeleidigung], color: "bg-blue-500 dark:bg-blue-500" }
+let STÖ: Party = { name: "STÖ", displayName: "Störtebeker", Agrees: [questionSubventionen, questionBesuchertag, questionMüllvermeidung, questionVeranstaltungen, questionBeleidigung, questionGesetze], color: "bg-black dark:bg-white" }
 function getAgreePercentage(party: Party, questions: Question[]) {
     //remove the questions that the user answered with neutral from both the party and the user
     let userQuestions = questions.filter(q => q.answer !== AnswerType.Neutral)
@@ -65,7 +66,7 @@ export type Result = { party: Party, percentage: number }
 
 export function getResults(questions: Question[]): Result[] {
     let results: Result[] = []
-    const parties = [CBP, Monetarier, DP];
+    const parties = [CBP, Monetarier, DP, STÖ];
     parties.forEach(party => {
         const percentage = Number(getAgreePercentage(party, questions));
         results.push({ party, percentage });
