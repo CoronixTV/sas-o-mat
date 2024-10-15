@@ -33,9 +33,9 @@ function getAgreePercentage(party: Party, questions: Question[]) {
     //remove the questions that the user answered with neutral from both the party and the user
     let userQuestions = questions.filter(q => q.answer !== AnswerType.Neutral)
     let userAgrees = userQuestions.filter(q => q.answer === AnswerType.Agree)
-    if (userAgrees.length === 0) {
+    /*if (userAgrees.length === 0) {
         return 0
-    }
+    }*/
     let userDisagrees = userQuestions.filter(q => q.answer === AnswerType.Disagree)
     let partyQuestions: Question[] = []
     party.Agrees.forEach(q => {
@@ -54,7 +54,9 @@ function getAgreePercentage(party: Party, questions: Question[]) {
         if (!partyQuestions.includes(q)) {
             common_disagrees++
         }
-    })
+        userQuestions.length  })
+    console.log("lol")
+    console.log(party.name, common_agrees, common_disagrees)
     return Number(((common_agrees + common_disagrees) / userQuestions.length) * 100).toFixed(1);
 }
 
